@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/sintell/wsgame/utils"
+	"github.com/sintell/i-Economics/utils"
 	"log"
 	"os"
 )

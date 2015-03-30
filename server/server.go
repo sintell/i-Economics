@@ -2,8 +2,8 @@ package server
 
 import (
 	"github.com/gorilla/websocket"
-	"github.com/sintell/wsgame/connection"
-	"github.com/sintell/wsgame/utils"
+	"github.com/sintell/i-Economics/connection"
+	"github.com/sintell/i-Economics/utils"
 	"log"
 	"net/http"
 	"os"

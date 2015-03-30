@@ -1,21 +1,34 @@
 package model
 
+import (
+	"math/rand"
+)
+
 const (
 	DEFAULT_COMPANIES_NUMBER = 3
 	DEFAULT_BANKS_NUMBER     = 1
 )
 
 type WorldId int32
+type WorldTick int64
+type WorldStatus int8
+
+type WorldMetaInfo struct {
+	Id     WorldId
+	Tick   WorldTick
+	Status WorldStatus
+}
 
 type World struct {
-	Id        WorldId
+	MetaInfo WorldMetaInfo
+
 	Market    *Market
 	Companies []*Company
 	Banks     []*Bank
 }
 
-func NewWorld() {
-	world := World{}
+func NewWorld() *World {
+	world := World{MetaInfo: WorldMetaInfo{Id: WorldId(rand.Int31()), Tick: 0, Status: 0}}
 
 	logger.Info("*Begin initialization*")
 	logger.Info("Generate companies")
@@ -44,4 +57,6 @@ func NewWorld() {
 	logger.Info("Generate production types")
 	logger.Info("Set creation costs for production types")
 	logger.Info("*End*")
+
+	return &world
 }

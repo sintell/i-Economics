@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"github.com/sintell/wsgame/connection"
-	"github.com/sintell/wsgame/model"
-	"github.com/sintell/wsgame/utils"
+	"github.com/sintell/i-Economics/connection"
+	"github.com/sintell/i-Economics/model"
+	"github.com/sintell/i-Economics/utils"
 	"log"
 	"os"
 )
@@ -17,7 +17,12 @@ func init() {
 }
 
 func GenerateWorld() model.WorldId {
-    world = model.
+	world := model.NewWorld()
+	worldId := world.MetaInfo.Id
+	logger.Info("Creating new world [%s]", worldId)
+
+	worlds[worldId] = world
+	return worldId
 }
 
 func Process(message *connection.Message) {
