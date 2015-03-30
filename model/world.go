@@ -14,7 +14,7 @@ type World struct {
 	Banks     []*Bank
 }
 
-func New() {
+func NewWorld() {
 	world := World{}
 
 	logger.Info("*Begin initialization*")
