@@ -28,6 +28,9 @@ func New() *Server {
 
 func (s *Server) Handler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Scheme != "ws" {
+			s.Logger.Error("Wrong scheme. Must be ws, but got %s", r.URL.Scheme)
+		}
 		s.Logger.Info("New connection from %s", r.Header.Get("Origin"))
 		client := connection.New(w, r)
 		s.Loop(client)
@@ -61,6 +64,7 @@ func (s *Server) Loop(client *websocket.Conn) {
 	for {
 		err := client.ReadJSON(message)
 		if err != nil {
+			s.Logger.Error("Cant read JSON request from client. Reason: %s", err.Error())
 			panic(err.Error())
 		}
 
