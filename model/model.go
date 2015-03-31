@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/sintell/wsgame/utils"
+	"github.com/sintell/i-Economics/utils"
 	"log"
 	"os"
 )
@@ -37,9 +37,7 @@ type Currency interface {
 }
 
 type Goods interface {
-	Amount() int
 	InitialCost() CurrencyAmount
-	Transfer(*Trader) (*DealInfo, error)
 }
 
 type Deal interface {
