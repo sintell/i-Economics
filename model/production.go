@@ -1,22 +1,36 @@
 package model
 
+import (
+	"errors"
+)
+
 type Production struct {
-	amount int
-	price  float64
+	productionType string
+	initialPrice   CurrencyAmount
+	dependsOn      *Production
 }
 
 type GoodsAmount int
 
-func (p *Production) Amount() int {
-	return p.amount
+func (p *Production) Type() string {
+	return p.productionType
 }
 
-func (p *Production) Transfer(trader *Trader) (*DealInfo, error) {
-	deal, err := (*trader).Accept(p)
+func (p *Production) InitialPrice() CurrencyAmount {
+	return p.initialPrice
+}
 
-	if err != nil {
-		return nil, err
+func NewProduction(commonName string, initialPrice CurrencyAmount) (*Production, error) {
+	if commonName == "" {
+		return nil, errors.New("Common name mustn't be empty string")
 	}
 
-	return (*deal).Info(), nil
+	if initialPrice <= 0 {
+		return nil, errors.New("Initial price mustn't be less then zero")
+	}
+
+	return &Production{
+		productionType: commonName,
+		initialPrice:   initialPrice,
+	}, nil
 }

@@ -1,17 +1,23 @@
 package model
 
+import (
+	"strconv"
+)
+
 const (
-	DEFAULT_COMPANIES_NUMBER = 3
-	DEFAULT_BANKS_NUMBER     = 1
+	DEFAULT_COMPANIES_NUMBER        = 3
+	DEFAULT_BANKS_NUMBER            = 1
+	DEFAULT_PRODUCTION_TYPES_NUMBER = 3
 )
 
 type WorldId int32
 
 type World struct {
-	Id        WorldId
-	Market    *Market
-	Companies []*Company
-	Banks     []*Bank
+	Id              WorldId
+	Market          *Market
+	Companies       []*Company
+	Banks           []*Bank
+	ProductionTypes []*Production
 }
 
 func NewWorld() {
@@ -38,10 +44,23 @@ func NewWorld() {
 	for _, company := range world.Companies {
 		world.Banks[0].OpenAccount(company)
 	}
+	logger.Info("Generate currency on bank accounts")
 	logger.Debug("%i", world.Banks[0])
 
-	logger.Info("Generate currency on bank accounts")
 	logger.Info("Generate production types")
+	for i := 0; i < DEFAULT_PRODUCTION_TYPES_NUMBER; i++ {
+		world.ProductionTypes = append(world.ProductionTypes,
+			NewProduction("Production "+strconv.Itoa(i), CurrencyAmount(i*0.75+10)))
+
+		if i == DEFAULT_PRODUCTION_TYPES_NUMBER-1 {
+			world.ProductionTypes[0].dependsOn = world.ProductionTypes[i]
+		}
+		if i > 0 {
+			world.ProductionTypes[i].dependsOn = world.ProductionTypes[i-1]
+		}
+	}
 	logger.Info("Set creation costs for production types")
+	logger.Debug("%i", world.ProductionTypes)
+
 	logger.Info("*End*")
 }
